@@ -1,0 +1,20 @@
+{
+  "name": "outputStream",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "",
+  "payloadData": [
+    {
+      "name": "name",
+      "type": "STRING"
+    },
+    {
+      "name": "averageClearingPrice",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "category",
+      "type": "STRING"
+    }
+  ]
+}

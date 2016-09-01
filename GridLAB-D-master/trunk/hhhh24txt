@@ -1,0 +1,53 @@
+Unable to connect to server.start server
+server listening to port 7777
+                                                                                                                                                        
+Core profiler results
+======================
+
+Total objects               4079 objects
+Parallelism                    1 thread
+Total time                   7.0 seconds
+  Core time                  2.3 seconds (32.6%)
+    Compiler                 3.9 seconds (55.0%)
+    Instances                0.0 seconds (0.0%)
+    Random variables         0.0 seconds (0.0%)
+    Schedules                0.0 seconds (0.0%)
+    Loadshapes               0.1 seconds (1.1%)
+    Enduses                  0.0 seconds (0.5%)
+    Transforms               0.1 seconds (2.0%)
+  Model time                 4.7 seconds/thread (67.4%)
+Simulation time                0 days
+Simulation speed             748 object.hours/second
+Passes completed             264 passes
+Time steps completed          77 timesteps
+Convergence efficiency      3.43 passes/timestep
+Read lock contention        0.0%
+Write lock contention       0.0%
+Average timestep             60 seconds/timestep
+Simulation rate             660 x realtime
+
+
+Model profiler results
+======================
+
+Class            Time (s) Time (%) msec/obj
+---------------- -------- -------- --------
+multi_recorder     1.405     29.8%    702.5
+triplex_meter      0.667     14.1%      1.0
+controller         0.602     12.8%      1.0
+house              0.563     11.9%      0.9
+triplex_line       0.443      9.4%      0.7
+waterheater        0.394      8.4%      0.9
+passive_controll   0.212      4.5%      0.5
+climate            0.201      4.3%    201.0
+ZIPload            0.190      4.0%      0.3
+transformer        0.014      0.3%      0.7
+node               0.009      0.2%      0.5
+capacitor          0.005      0.1%      2.5
+overhead_line      0.005      0.1%      0.6
+recorder           0.004      0.1%      4.0
+underground_line   0.003      0.1%      1.5
+auction            0.001      0.0%      1.0
+================ ======== ======== ========
+Total              4.718    100.0%      1.2
+

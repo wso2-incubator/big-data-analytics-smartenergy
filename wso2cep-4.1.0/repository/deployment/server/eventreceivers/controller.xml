@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventReceiver name="controller" statistics="disable" trace="disable" xmlns="http://wso2.org/carbon/eventreceiver">
+    <from eventAdapterType="http">
+        <property name="transports">all</property>
+    </from>
+    <mapping customMapping="enable" type="text">
+        <property>
+            <from regex="([^,]+)"/>
+            <to default="0.0" name="bid_price" type="double"/>
+        </property>
+        <property>
+            <from regex="[^,]+,([^,]+)"/>
+            <to default="0.0" name="bid_quantity" type="double"/>
+        </property>
+        <property>
+            <from regex="[^,]+,[^,]+,([^,]+)"/>
+            <to default="0.0" name="power_state" type="string"/>
+        </property>
+        <property>
+            <from regex="[^,]+,[^,]+,[^,]+,([^,]+)"/>
+            <to default="0.0" name="air_temperature" type="double"/>
+        </property>
+        <property>
+            <from regex="[^,]+,[^,]+,[^,]+,[^,]+,([^,]+)"/>
+            <to name="system_mode" type="string"/>
+        </property>
+        <property>
+            <from regex="[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,([^,]+)"/>
+            <to default="0.0" name="hvac_load" type="double"/>
+        </property>
+        <property>
+            <from regex="[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,([^,]+)"/>
+            <to default="0.0" name="outdoor_temperature" type="double"/>
+        </property>
+        <property>
+            <from regex="[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,([^,]+)"/>
+            <to name="name" type="string"/>
+        </property>
+    </mapping>
+    <to streamName="controller" version="1.0.0"/>
+</eventReceiver>

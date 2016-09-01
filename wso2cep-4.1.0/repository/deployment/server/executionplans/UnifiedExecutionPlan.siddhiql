@@ -1,0 +1,79 @@
+/* Enter a unique ExecutionPlan */
+@Plan:name('UnifiedExecutionPlan')
+
+/* Enter a unique description for ExecutionPlan */
+-- @Plan:description('ExecutionPlan')
+
+/* define streams/tables and write queries here ... */
+
+@Import('dataInput:1.0.0')
+define stream dataInput (a_timestamp string, b_windspeed double, c_temperature double, d_solarflux double, e_humidity double,
+						 f_ma_5_windspeed double, g_ma_5_temperature double, h_ma_5_solarflux double, i_ma_5_humidity double, 
+						 j_mm_5_windspeed double, k_mm_5_temperature double, l_mm_5_solarflux double, m_mm_5_humidity double,
+						 n_sd_5_windspeed double, o_sd_5_temperature double, p_sd_5_solarflux double, q_sd_5_humidity double);
+
+@Import('market:1.0.0')
+define stream mktStream (clearingprice double, clearingquantity double, sellertotal double, buyertotal double, 
+						 clearingtype string, name string, time string);
+
+@Export('outputStream:1.0.0')
+define stream outputStream (name string, averageClearingPrice double, category string);
+
+@Export('newPrice:1.0.0')
+define stream newPrice (a_tstamp long,r_clearingprice double);
+
+@Export('predictionInputStream:1.0.0')
+define stream predictionInputStream (a_tstamp long, b_windspeed double, c_temperature double, d_solarflux double, e_humidity double,
+						 f_ma_5_windspeed double, g_ma_5_temperature double, h_ma_5_solarflux double, i_ma_5_humidity double, 
+						 j_mm_5_windspeed double, k_mm_5_temperature double, l_mm_5_solarflux double, m_mm_5_humidity double,
+						 n_sd_5_windspeed double, o_sd_5_temperature double, p_sd_5_solarflux double, q_sd_5_humidity double);
+
+
+@Export('afterPrediction:1.0.0')
+define stream afterPrediction (a_tstamp long, b_windspeed double, c_temperature double, d_solarflux double, e_humidity double,
+							   f_ma_5_windspeed double, g_ma_5_temperature double, h_ma_5_solarflux double, i_ma_5_humidity double,
+							   j_mm_5_windspeed double, k_mm_5_temperature double, l_mm_5_solarflux double, m_mm_5_humidity double,
+							   n_sd_5_windspeed double, o_sd_5_temperature double, p_sd_5_solarflux double, q_sd_5_humidity double,
+							   r_clearingprice double);
+
+
+@Export('mktStreamUpdated:1.0.0')
+define stream mktStreamUpdated (tstamp long, clearingquantity double, sellertotal double, buyertotal double, clearingtype string, 
+								name string, time string);
+
+
+define table weather(timestamp long, b_windspeed double, c_temperature double, d_solarflux double, e_humidity double,
+						 f_ma_5_windspeed double, g_ma_5_temperature double, h_ma_5_solarflux double, i_ma_5_humidity double, 
+						 j_mm_5_windspeed double, k_mm_5_temperature double, l_mm_5_solarflux double, m_mm_5_humidity double,
+						 n_sd_5_windspeed double, o_sd_5_temperature double, p_sd_5_solarflux double, q_sd_5_humidity double);
+
+from dataInput select smartgrid:timeStampUnix(a_timestamp) as timestamp,b_windspeed,c_temperature,d_solarflux,
+                      e_humidity,f_ma_5_windspeed, g_ma_5_temperature,h_ma_5_solarflux,
+                      i_ma_5_humidity, j_mm_5_windspeed, k_mm_5_temperature, l_mm_5_solarflux, m_mm_5_humidity, n_sd_5_windspeed, o_sd_5_temperature,
+		              p_sd_5_solarflux, q_sd_5_humidity
+insert into weather;
+
+from mktStream select smartgrid:timeStampUnix(time) as tstamp, clearingquantity, sellertotal, buyertotal, clearingtype, name, time 
+insert into mktStreamUpdated;
+
+
+from mktStreamUpdated#window.length(1) join weather
+on (mktStreamUpdated.tstamp + 900) == weather.timestamp
+select  weather.timestamp as a_tstamp,b_windspeed,c_temperature,d_solarflux,e_humidity,f_ma_5_windspeed, g_ma_5_temperature,h_ma_5_solarflux,
+        i_ma_5_humidity, j_mm_5_windspeed, k_mm_5_temperature, l_mm_5_solarflux, m_mm_5_humidity, n_sd_5_windspeed, o_sd_5_temperature,
+		p_sd_5_solarflux, q_sd_5_humidity
+insert into predictionInputStream;
+
+
+from predictionInputStream#ml:predict('/home/sanjaya/Downloads/modified', 'double')
+select *
+insert into afterPrediction;
+
+from afterPrediction
+select a_tstamp,r_clearingprice
+insert into newPrice;
+
+/*
+from newPrice
+select 'abc' as name, clearingprice as averageClearingPrice, '|abc' as category
+insert into outputStream;*/

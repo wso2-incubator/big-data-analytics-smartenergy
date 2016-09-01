@@ -1,0 +1,193 @@
+<!--
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html>
+<head>
+    <meta http-equiv="content-type" content=""/>
+    <title>WSO2 Complex Event Processor 4.1.0 Release
+        Notes</title>
+    <link href="./tools/cmd/css/wsas-dist-doc.css" rel="stylesheet"
+          type="text/css" media="all"/>
+</head>
+
+<body>
+<h1>WSO2 Complex Event Processor(WSO2 CEP) 4.1.0
+    Release Notes</h1>
+
+<h3>13 Feb 2016</h3>
+
+<p>WSO2 CEP is a lightweight and easy-to-use Open Source Complex Event Processing
+    Server (CEP) is available under the Apache Software License v2.0.WSO2 Complex
+    Event Processor identifies the most meaningful events within the event cloud,
+    analyzes their impacts, and acts on them in real time. Its built to be extremely
+    high performing and massively scalable.
+</p>
+
+<p>This is based on the revolutionary <a
+        href="http://wso2.org/projects/carbon">WSO2 Carbon platform</a>,
+    and is based on the OSGi framework to achieve the better modularity for
+    your Service Oriented Architecture (SOA). This also contains a lots of new
+    features and many other optional components to customize the behavior of the
+    server. Further, if you do not want any of the built in features, you can
+    uninstall those features without any trouble. In other words, CEP can be
+    customized to your SOA needs. </p>
+
+
+<p>WSO2 Complex Event Processor is shipped with Siddhi and supports plugable back end
+    runtimes as features which can be installed via WSO2 Carbon Feature Management.
+    Siddhi is a Complex Event processing Engine developed by WSO2 engineers to achieve very high
+    performance and massive scalability</p>
+
+<p>An open source product, WSO2 Complex Event Processor is available under the
+    <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software
+        License (v2.0)</a>.
+    This includes all of the extra integration and management
+    functionality as well.
+</p>
+
+<p>
+    The WIKI based documentation is available at
+    <a href="https://docs.wso2.com/display/CEP410/WSO2+Complex+Event+Processor+Documentation">
+        https://docs.wso2.com/display/CEP410/WSO2+Complex+Event+Processor+Documentation
+    </a>
+</p>
+
+<h2>Key Features</h2>
+<ul>
+
+    <li>Support Multiple Input Event Adapter Types - WSO2 CEP supports WSO2Event, SOAP, HTTP, JMS, Email, File-tail,
+        Kafka, MQTT, Websocket
+        input adapter types
+    </li>
+    <li>Support Multiple Output Event Adapter Types - WSO2 CEP supports WSO2Event, SOAP, HTTP, JMS, Email, SMS, Logger,
+        Kafka, RDBMS, Cassandra, MQTT, Websocket, UI output adapter types
+    </li>
+    <li>Support for multiple event formats such as XML, JSON, Map, Text & WSO2Event</li>
+    <li>Distributed processing support - WSO2 CEP can be integrated with Apache Storm to perform distributed
+        processing
+    </li>
+    <li>Siddhi Query Partitioning</li>
+    <li>Siddhi Event Tables to use historical data within real time processing</li>
+    <li>High Availability Deployment</li>
+    <li>Output rate limiting support for Siddhi</li>
+    <li>Monitoring Support - WSO2 CEP supports system, per execution plan/per deployment artifact monitoring.</li>
+    <li>Tracing Support - WSO2 CEP supports tracing a message at multiple stages of the event flow.</li>
+    <li>Event Flow Support - WSO2 CEP supports visualizing the event flow within the system.</li>
+    <li>Event Simulator - WSO2 CEP supports an easy gui to send sample events to test the event flow.</li>
+    <li>Siddhi Try It Tool - A tool for experimenting with Siddhi Query Language.</li>
+    <li>Execution Manager - A user friendly dashboard to customize preconfigured domain-specific execution parameters.
+    </li>
+    <li>Analytics Dashboard - An inbuilt dashboard, capable of visualizing event streams in real-time</li>
+    <li>Easily Integrates with Enterprise System - by RESTful HTTP protocol with JSON, JMS MAP/XML/Text messages, SOAP
+        and Email
+    </li>
+    <li>Support for Long Duration Queries - Supports periodic snapshots to a scalable persistence store.
+    </li>
+    <li>Tightly Integrates with WSO2 Data Analytics Server - for recording and post processing of events.
+    </li>
+    <li>Realtime Dashboard using the inbuilt Realtime Analytics Gadgets</li>
+    <li>Geo Dashboard with geo fencing capabilities</li>
+    <li>Siddhi Extensions</li>
+    <li>Siddhi query autocompletion</li>
+    <li>Event Adaptor Extension</li>
+    <li>Configuration based class loading mechanism for Siddhi</li>
+    <li>Arbitrary key values pair support for WSO2 Events</li>
+</ul>
+
+<h2>New Features In This Release</h2>
+<ul>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-927'>CEP-927</a>] -         Fix UI compatibility issues in IE browsers
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1178'>CEP-1178</a>] -         Deactivate Event Receiver
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1406'>CEP-1406</a>] -         Need to have tool tips for icons in the Dashboard
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1419'>CEP-1419</a>] -         Provide &quot;insert or update&quot; functionality to event tables
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1426'>CEP-1426</a>] -         When passing parameters to function allow the syntax func(*) if all the attributes of the inputstream have to be passed
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1445'>CEP-1445</a>] -         Improve user-friendliness by sorting drop-down lists
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1447'>CEP-1447</a>] -         Instrumentation &amp; Monitoring support for CEP and Siddhi
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1450'>CEP-1450</a>] -         Adding Arbitrary Map support for Receiver Components
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1453'>CEP-1453</a>] -         Pause, Resume and Stop support for Event Simulator
+    </li>
+    <li>[<a href='https://wso2.org/jira/browse/CEP-1458'>CEP-1458</a>] -         Support for more then 2 nodes in HA deployment
+    </li>
+</ul>
+
+<h2>Reporting Problems</h2>
+Issues can be reported using the public JIRA available at
+<a href="https://wso2.org/jira/browse/CEP" target="_blank">
+    https://wso2.org/jira/browse/CEP</a>
+
+<h2>Contact us</h2>
+WSO2 Complex Event Processor developers can be contacted via the mailing lists:
+<br/>
+<strong>For Developers:</strong>
+<a href="mailto:dev@wso2.org">dev@wso2.org</a>
+<br/>
+For details on subscriptions see
+<a href="http://wso2.org/mail">
+    http://wso2.org/mail</a>
+<br/>
+<br/>
+Alternatively, questions can also be raised in the stackoverflow:
+<br/>
+<strong>Forum</strong>
+<a href="http://stackoverflow.com/questions/tagged/wso2/" target="_blank">http://stackoverflow.com/questions/tagged/wso2/</a>
+<br/>
+
+<h2>Training</h2>
+
+<p>
+    WSO2 Inc. offers a variety of professional Training Programs, including
+    training on WSO2 CEP, Siddhi, WSO2 DAS and a number of other products.
+
+
+    For additional support information please refer to
+    <a target="_blank" href="http://wso2.com/training/course-catalog/">
+        http://wso2.com/training/course-catalog/</a>
+</p>
+
+<h2>Support</h2>
+
+<p>
+    WSO2 Inc. offers a variety of development and production support
+    programs, ranging from Web-based support up through normal business
+    hours, to premium 24x7 phone support.
+    <br/>
+    <br/>
+
+    For additional support information please refer to
+    <a target="_blank"
+       href="http://wso2.com/support/">http://wso2.com/support/</a>
+</p>
+
+<p>For more information on WSO2 Complex Event Processor, visit the
+    <a href="http://wso2.org/" target="_blank">WSO2 Oxygen Tank</a>
+</p>
+
+<p>Thank you for your interest in WSO2 Complex Event Processor</p>
+<strong>
+    <em>-The WSO2 Complex Event Processor Development Team</em>
+</strong>
+<hr/>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "newPrice",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "",
+  "payloadData": [
+    {
+      "name": "a_tstamp",
+      "type": "LONG"
+    },
+    {
+      "name": "r_clearingprice",
+      "type": "DOUBLE"
+    }
+  ]
+}

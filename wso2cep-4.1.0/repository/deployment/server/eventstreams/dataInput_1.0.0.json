@@ -1,0 +1,76 @@
+{
+  "name": "dataInput",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "",
+  "payloadData": [
+    {
+      "name": "a_timestamp",
+      "type": "STRING"
+    },
+    {
+      "name": "b_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "c_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "d_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "e_humidity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "f_ma_5_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "g_ma_5_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "h_ma_5_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "i_ma_5_humidity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "j_mm_5_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "k_mm_5_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "l_mm_5_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "m_mm_5_humidity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "n_sd_5_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "o_sd_5_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "p_sd_5_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "q_sd_5_humidity",
+      "type": "DOUBLE"
+    }
+  ]
+}

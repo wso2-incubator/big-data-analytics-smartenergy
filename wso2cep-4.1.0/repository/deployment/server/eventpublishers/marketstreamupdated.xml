@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventPublisher name="marketstreamupdated" statistics="disable"
+  trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+  <from streamName="mktStreamUpdated" version="1.0.0"/>
+  <mapping customMapping="disable" type="text">
+    <inline>{{tstamp}},{{clearingquantity}},{{sellertotal}},{{buyertotal}},{{clearingtype}},{{name}},{{time}}
+    </inline>
+  </mapping>
+  <to eventAdapterType="file">
+    <property name="buffersize">1024</property>
+    <property name="filename">/home/sanjaya/Desktop/marketstreamupdated.csv</property>
+  </to>
+</eventPublisher>

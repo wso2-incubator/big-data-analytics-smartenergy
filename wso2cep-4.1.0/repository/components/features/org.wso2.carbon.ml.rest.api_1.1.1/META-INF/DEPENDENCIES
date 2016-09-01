@@ -1,0 +1,19 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+WSO2 Carbon - Machine Learner REST APIs Feature
+
+
+From: 'an unknown organization'
+  - axis2.wso2 (http://wso2.org) org.apache.axis2.wso2:axis2:bundle:1.6.1.wso2v12
+
+
+From: 'WSO2, Inc.' (http://wso2.com)
+  - WSO2 Carbon - Machine Learner REST API (http://wso2.com/products/machine-learner/components/ml/org.wso2.carbon.ml.rest.api) org.wso2.carbon.ml:org.wso2.carbon.ml.rest.api:war:1.1.1
+    License: Apache License Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+
+
+
+

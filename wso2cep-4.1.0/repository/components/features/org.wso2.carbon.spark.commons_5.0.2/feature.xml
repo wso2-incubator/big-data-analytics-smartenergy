@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.spark.commons" label="WSO2 Carbon - Spark Commons Feature" provider-name="%providerName" version="5.0.2">
+  <description>This feature contains the core bundles required for Spark</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="netty-all" unpack="false" version="4.0.23.wso2v1"/>
+  <plugin id="uncommons-maths" unpack="false" version="1.2.2.wso2v1"/>
+  <plugin id="stream" unpack="false" version="2.2.0.wso2v1"/>
+  <plugin id="org.xerial.snappy.snappy-java" unpack="false" version="1.1.1.7"/>
+  <plugin id="com.sun.jersey.jersey-server" unpack="false" version="1.9"/>
+  <plugin id="spark-streaming_2.10" unpack="false" version="1.4.1.wso2v1"/>
+  <plugin id="htrace-core-apache" unpack="false" version="3.1.0.incubating_wso2v1"/>
+  <plugin id="json4s-jackson_2.10" unpack="false" version="3.2.10.wso2v1"/>
+  <plugin id="chill_2.10" unpack="false" version="0.5.0.wso2v1"/>
+  <plugin id="hadoop-client" unpack="false" version="2.6.0.wso2v1"/>
+  <plugin id="objenesis" unpack="false" version="2.1.0.wso2v1"/>
+  <plugin id="com.fasterxml.jackson.module.jackson.module.scala" unpack="false" version="2.4.4"/>
+  <plugin id="com.fasterxml.jackson.core.jackson-annotations" unpack="false" version="2.4.4"/>
+  <plugin id="io.dropwizard.metrics.graphite" unpack="false" version="3.1.2"/>
+  <plugin id="com.sun.jersey.jersey-core" unpack="false" version="1.9"/>
+  <plugin id="org.scala-lang.scala-reflect" unpack="false" version="2.10.4.v20140209-180020-VFINAL-b66a39653b"/>
+  <plugin id="io.dropwizard.metrics.core" unpack="false" version="3.1.2"/>
+  <plugin id="com.google.protobuf" unpack="false" version="2.5.0"/>
+  <plugin id="mesos" unpack="false" version="0.18.1.wso2v1"/>
+  <plugin id="json" unpack="false" version="1.0.0.wso2v1"/>
+  <plugin id="org.apache.commons.math3" unpack="false" version="3.4.1"/>
+  <plugin id="config" unpack="false" version="1.2.1.wso2v1"/>
+  <plugin id="org.apache.commons.lang3" unpack="false" version="3.3.2"/>
+  <plugin id="slf4j.log4j12" unpack="false" version="1.7.12"/>
+  <plugin id="javax.servlet.jsp-api" unpack="false" version="2.2.1"/>
+  <plugin id="io.dropwizard.metrics.jvm" unpack="false" version="3.1.2"/>
+  <plugin id="org.spark.project.akka.remote" unpack="false" version="2.3.4.spark"/>
+  <plugin id="minlog" unpack="false" version="1.2.0.wso2v1"/>
+  <plugin id="org.spark.project.akka.actor" unpack="false" version="2.3.4.spark"/>
+  <plugin id="com.ning.compress-lzf" unpack="false" version="1.0.3"/>
+  <plugin id="org.jboss.netty" unpack="false" version="3.9.0.Final"/>
+  <plugin id="spark-core_2.10" unpack="false" version="1.4.1.wso2v1"/>
+  <plugin id="spark-sql_2.10" unpack="false" version="1.4.1.wso2v1"/>
+  <plugin id="org.spark.project.akka.slf4j" unpack="false" version="2.3.4.spark"/>
+  <plugin id="paranamer" unpack="false" version="2.6.0.wso2v1"/>
+  <plugin id="com.fasterxml.jackson.core.jackson-databind" unpack="false" version="2.4.4"/>
+  <plugin id="org.scala-lang.scala-library" unpack="false" version="2.10.4.v20140209-180020-VFINAL-b66a39653b"/>
+  <plugin id="com.google.guava" unpack="false" version="15.0.0"/>
+  <plugin id="kryo" unpack="false" version="2.24.0.wso2v1"/>
+  <plugin id="slf4j" unpack="false" version="1.5.10.wso2v1"/>
+  <plugin id="commons-configuration" unpack="false" version="1.6.0.wso2v1"/>
+  <plugin id="io.dropwizard.metrics.json" unpack="false" version="3.1.2"/>
+  <plugin id="com.fasterxml.jackson.core.jackson-core" unpack="false" version="2.4.4"/>
+</feature>

@@ -1,0 +1,40 @@
+{
+  "name": "controller",
+  "version": "1.0.0",
+  "nickName": "controller",
+  "description": "controller event stream",
+  "payloadData": [
+    {
+      "name": "bid_price",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "bid_quantity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "power_state",
+      "type": "STRING"
+    },
+    {
+      "name": "air_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "system_mode",
+      "type": "STRING"
+    },
+    {
+      "name": "hvac_load",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "outdoor_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "name",
+      "type": "STRING"
+    }
+  ]
+}

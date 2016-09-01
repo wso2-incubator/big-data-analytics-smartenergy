@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventPublisher name="newPriceFile" statistics="disable" trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+  <from streamName="newPrice" version="1.0.0"/>
+  <mapping customMapping="enable" type="text">
+    <inline>{{a_tstamp}},{{r_clearingprice}},
+    </inline>
+  </mapping>
+  <to eventAdapterType="file">
+    <property name="buffersize">1024</property>
+    <property name="filename">/home/sanjaya/Desktop/newPriceFile.csv</property>
+  </to>
+</eventPublisher>

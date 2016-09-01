@@ -1,0 +1,19 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+WSO2 Carbon - Machine Learner Commons Feature
+
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons Math (http://commons.apache.org/proper/commons-math/) org.apache.commons:commons-math3:jar:3.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'WSO2, Inc.' (http://wso2.com)
+  - WSO2 Carbon - Machine Learner Commons Component (http://wso2.com/products/machine-learner/components/ml/org.wso2.carbon.ml.commons) org.wso2.carbon.ml:org.wso2.carbon.ml.commons:bundle:1.1.1
+    License: Apache License Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+
+
+
+

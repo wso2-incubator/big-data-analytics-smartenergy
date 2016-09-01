@@ -1,0 +1,10 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.ml.database_1.1.1/conf/datasources/ml-datasources.xml,target:${installFolder}/../../conf/datasources/ml-datasources.xml,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../dbscripts); \
+org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../dbscripts/ml); \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.ml.database_1.1.1/dbscripts/h2.sql,target:${installFolder}/../../../dbscripts/ml/h2.sql,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.ml.database_1.1.1/dbscripts/mysql.sql,target:${installFolder}/../../../dbscripts/ml/mysql.sql,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.ml.database_1.1.1/repository/database/WSO2ML_DB.h2.db/,target:${installFolder}/../../database/WSO2ML_DB.h2.db,overwrite:true);\
+
+properties.0.name=org.wso2.carbon.p2.category.type
+properties.0.value=server

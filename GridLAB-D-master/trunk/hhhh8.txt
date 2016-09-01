@@ -1,0 +1,53 @@
+Unable to connect to server.start server
+server listening to port 7777
+                                      
+Core profiler results
+======================
+
+Total objects               4079 objects
+Parallelism                    1 thread
+Total time                   3.0 seconds
+  Core time                  1.2 seconds (40.1%)
+    Compiler                 3.7 seconds (124.5%)
+    Instances                0.0 seconds (0.0%)
+    Random variables         0.0 seconds (0.0%)
+    Schedules                0.0 seconds (0.0%)
+    Loadshapes               0.0 seconds (0.9%)
+    Enduses                  0.0 seconds (0.4%)
+    Transforms               0.1 seconds (1.8%)
+  Model time                 1.8 seconds/thread (59.9%)
+Simulation time                0 days
+Simulation speed             544 object.hours/second
+Passes completed              93 passes
+Time steps completed          24 timesteps
+Convergence efficiency      3.88 passes/timestep
+Read lock contention        0.0%
+Write lock contention       0.0%
+Average timestep             60 seconds/timestep
+Simulation rate             480 x realtime
+
+
+Model profiler results
+======================
+
+Class            Time (s) Time (%) msec/obj
+---------------- -------- -------- --------
+multi_recorder     0.434     24.2%    217.0
+controller         0.361     20.1%      0.6
+triplex_meter      0.218     12.1%      0.3
+house              0.207     11.5%      0.3
+climate            0.142      7.9%    142.0
+triplex_line       0.136      7.6%      0.2
+waterheater        0.130      7.2%      0.3
+ZIPload            0.077      4.3%      0.1
+passive_controll   0.074      4.1%      0.2
+node               0.007      0.4%      0.4
+stub_bidder        0.003      0.2%      3.0
+capacitor          0.002      0.1%      1.0
+transformer        0.002      0.1%      0.1
+recorder           0.001      0.1%      1.0
+regulator          0.001      0.1%      1.0
+auction            0.001      0.1%      1.0
+================ ======== ======== ========
+Total              1.796    100.0%      0.4
+

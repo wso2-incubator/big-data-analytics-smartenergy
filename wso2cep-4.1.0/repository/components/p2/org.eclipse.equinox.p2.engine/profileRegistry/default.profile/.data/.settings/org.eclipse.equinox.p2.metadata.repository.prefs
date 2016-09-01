@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/enabled=true
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/isSystem=false
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/name=feature-repository
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/nickname=p2 carbon repo
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/suffix=content.xml
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/uri=http\://product-dist.wso2.com/p2/carbon/releases/wilkes/
+repositories/http\:__product-dist.wso2.com_p2_carbon_releases_wilkes/version=1.0.0

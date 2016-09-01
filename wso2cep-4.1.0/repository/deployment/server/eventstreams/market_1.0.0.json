@@ -1,0 +1,36 @@
+{
+  "name": "market",
+  "version": "1.0.0",
+  "nickName": "market",
+  "description": "market event stream",
+  "payloadData": [
+    {
+      "name": "clearingprice",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "clearingquantity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "sellertotal",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "buyertotal",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "clearingtype",
+      "type": "STRING"
+    },
+    {
+      "name": "name",
+      "type": "STRING"
+    },
+    {
+      "name": "time",
+      "type": "STRING"
+    }
+  ]
+}

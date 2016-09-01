@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.ml.database" label="WSO2 Carbon - Machine Learner Database Service Feature" provider-name="%providerName" version="1.1.1">
+  <description>WSO2 Machine Learner (WSO2 ML)</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="json" unpack="false" version="2.0.0.wso2v1"/>
+  <plugin id="org.apache.commons.math3" unpack="false" version="3.2.0"/>
+  <plugin id="org.apache.commons.csv" unpack="false" version="1.0.0"/>
+  <plugin id="org.wso2.carbon.ml.database" unpack="false" version="1.1.1"/>
+</feature>
