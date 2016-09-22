@@ -3154,6 +3154,69 @@ EXPORT TIMESTAMP plc_house(OBJECT *obj, TIMESTAMP t0)
 	return my->sync_thermostat(obj->clock, t0);
 }
 
+void house_e::updateGame(){
+	if(nash!=-1 && totalLoad!=-1){
+		double calculatedLoad = 0.0;
+		double range = 2.0;
+				double coolingmin = cooling_setpoint - range;
+				double coolingmax = cooling_setpoint + range;
+				double heatingmin = heating_setpoint - range;
+				double heatingmax = heating_setpoint + range;
+
+		double theta = 0.5;
+		double gama = 1;
+		double gamadoubled = pow(gama, 2.0);
+				double air_temperature=0.0;
+
+				if (air_temperature > coolingmin){
+
+					calculatedLoad = ((2*theta*gamadoubled*cooling_demand) - (nash*totalLoad)) / ((2*theta*gamadoubled)+nash);
+					if (calculatedLoad >= cooling_demand){
+						double calculatedCoolingCapacity = cooling_demand;
+						//cooling_COP = cooling_COP;
+						//heating_COP = heating_COP;
+					}
+					else{
+						double calculatedCoolingCapacity = calculatedLoad;
+
+						//cooling_COP = calculateCoolingCOP(itList->first);
+						double pTout = outside_temperature;
+						cooling_COP = (design_cooling_capacity* (1.48924533 - 0.00514995*(pTout)) * (-0.01363961 + 0.01066989*(pTout))) / calculatedCoolingCapacity*KWPBTUPH;
+
+						//heating_COP = heating_COP;
+					}
+					//if (calculatedLoad >= itList->second.coolingDemand){
+					//	itList->second.willWork = true;
+					//}
+					//printf("original load was : %f calculated load is : %f \n", itList->second.coolingDemand, calculatedLoad);
+				}
+				else if (air_temperature < heatingmax){
+					calculatedLoad = ((2 * theta*gamadoubled*heating_demand) - (nash*totalLoad)) / ((2 * theta*gamadoubled) + nash);
+
+					if (calculatedLoad >= heating_demand){
+						double calculatedHeatingCapacity = heating_demand;
+						//cooling_COP = cooling_COP;
+						//heating_COP = heating_COP;
+					}
+					else{
+						double calculatedHeatingCapacity = calculatedLoad;
+						//cooling_COP = cooling_COP;
+						//heating_COP = calculateHeatingCOP(itList->first);
+						double pTout = outside_temperature;
+						double heating_COP = (design_heating_capacity*(0.34148808 + 0.00894102*(pTout)+0.00010787*(pTout)*(pTout))*
+									(2.03914613 - 0.03906753*(pTout)+0.00045617*(pTout)*(pTout)-0.00000203*(pTout)*(pTout)*(pTout))) / calculatedHeatingCapacity*KWPBTUPH;
+
+					}
+				//	if (calculatedLoad >= itList->second.heatingDemand){
+					//	itList->second.willWork = true;
+				//	}
+					//printf("original load was : %f calculated load is : %f \n", itList->second.heatingDemand, calculatedLoad);
+		}
+
+	}
+
+}
+
 /**@}**/
 
  	  	 

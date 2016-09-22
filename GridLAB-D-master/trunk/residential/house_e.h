@@ -7,14 +7,20 @@
  @{
  **/
 
+
+//#ifndef update_game
+//#define update_game
+
 #ifndef _HOUSE_E_H
 #define _HOUSE_E_H
+
 
 #include "residential.h"
 #include "complex.h"
 #include "enduse.h"
 #include "loadshape.h"
 #include "residential_enduse.h"
+#include "market/controller.h"
 
 typedef struct s_implicit_enduse {
 	enduse load;
@@ -79,7 +85,11 @@ public:
 	IMPLICITENDUSE *implicit_enduse_list;	///< implicit enduses
 	static set implicit_enduses_active;		///< implicit enduses that are to be activated
 	static enumeration implicit_enduse_source; ///< source of implicit enduses (e.g., ELCAP1990, ELCAP2010, RBSA2014)
+
 public:
+	///game
+	double nash;
+	double totalLoad;
 	// building design variables
 	double floor_area;							///< house_e floor area (ft^2)
 	double envelope_UA;							///< envelope UA (BTU.sq.ft/hr.ft2)
@@ -444,6 +454,9 @@ public:
 	void update_model(double dt=0);
 	void check_controls(void);
 	void update_Tevent(void);
+	/// game
+
+	void updateGame();
 
 	int init(OBJECT *parent);
 	int init_climate(void);
@@ -452,11 +465,15 @@ public:
 	CIRCUIT *attach(OBJECT *obj, double limit, int is220=false, enduse *pEnduse=NULL);
 	void attach_implicit_enduses(void);
 
+
 // access methods
 public:
 	inline double get_floor_area () { return floor_area; };
 	inline double get_Tout () { return *pTout; };
 	inline double get_Tair () { return Tair; };
+
+
+
 
 	complex *get_complex(OBJECT *obj, char *name);
 	bool *get_bool(OBJECT *obj, char *name);
