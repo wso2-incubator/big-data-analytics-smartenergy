@@ -9,9 +9,14 @@
 #ifndef _controller_H
 #define _controller_H
 
+//#define BTUPHPW		(3.4120)
+//#define KWPBTUPH	(1e-3/BTUPHPW)
+
 #include <stdarg.h>
 #include "auction.h"
 #include "gridlabd.h"
+#include "residential/house_e.h"
+#include <string>
 
 class controller : public gld_object {
 public:
@@ -23,6 +28,7 @@ public:
 	TIMESTAMP sync(TIMESTAMP t0, TIMESTAMP t1);
 	TIMESTAMP postsync(TIMESTAMP t0, TIMESTAMP t1);
 	static CLASS *oclass;
+	void setValue(OBJECT *parent, double c_cop, double h_cop);
 public:
 	typedef enum {
 		SM_NONE,
@@ -35,6 +41,7 @@ public:
 	} SIMPLE_MODE;
 	enumeration simplemode;
 	
+
 	typedef enum {
 		BM_OFF,
 		BM_ON,
@@ -93,6 +100,13 @@ public:
 	double mu0, mu1; //Ebony
 	double set_temp;
 	int may_run;
+
+
+
+	///////game
+	OBJECT *parent2;
+
+	//enumeration pState;
 
 	// new stuff
 	double clear_price;
@@ -157,6 +171,7 @@ private:
 	gld_property powerstate_prop;
 	gld_keyword *PS_OFF, *PS_ON, *PS_UNKNOWN;
 	enumeration last_pState;
+	//enumeration pState;
 	void cheat();
 	void fetch_double(double **prop, char *name, OBJECT *parent);
 	void fetch_int64(int64 **prop, char *name, OBJECT *parent);
@@ -249,6 +264,9 @@ private:
 	enumeration proxy_clearing_type;
 	enumeration proxy_clearing_type2;
 	double proxy_marginal_fraction2;
+
+	int counter; //nihla
+	//string testcase;
 };
 
 #endif // _controller_H

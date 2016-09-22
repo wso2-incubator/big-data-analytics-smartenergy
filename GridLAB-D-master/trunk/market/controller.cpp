@@ -15,9 +15,12 @@
 #include <unistd.h>
 #include <sys/errno.h>
 #include <pthread.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+//#include <errno.h>
+//#include <math.h>
+
 
 
 #ifndef MYNODE_H_
@@ -33,9 +36,21 @@ static pthread_t thread_id;
 static int shutdown_server = 0; /**< flag to stop accepting incoming connections */
 SOCKET sockfd = (SOCKET)0; /**< socket on which incomming connections are accepted */
 static bool initStatus = false;
-float averageClearingPriceLocalVar;
-float enthousiasm;
 
+double enthousiasm;
+double nashL;
+double totalL;
+
+double* indoorTemp;
+double* outdoorTemp;
+double* heatingSet;
+double* coolingSet;
+double* designHeatingCap;
+double* designCoolingCap;
+double* initHeatingCOP;
+double* initCoolingCOP;
+double* heatingD;
+double* coolingD;
 //void *serviceTheRequest(void *ptr);
 
 CLASS* controller::oclass = NULL;
@@ -398,8 +413,10 @@ void *serviceTheRequest(void *dummyptr){
 			strcat(buffer2, buffer);
 			buffer2[counter] = '\0';
 			if(strlen(buffer2) > 1){
-				//printf(">>>>>>>>>>>>>>>>>: %s\r\n", buffer2);
-				averageClearingPriceLocalVar = atof(buffer2);
+
+				nashL  = atof(buffer2);
+				printf("supp : %f\r\n", nashL);
+				totalL = 2000;
 			}
 			memset(buffer2, 0, sizeof(buffer2));
 			counter=0;
@@ -409,9 +426,8 @@ void *serviceTheRequest(void *dummyptr){
 		}
 	}
 
-	//printf("--->2222\r\n");
-}
 
+}
 
 void* startCommServer(void*){
 	//int portNumber = global_server_portnum;
@@ -540,11 +556,13 @@ void* startCommServer(void*){
 /** initialization process
  **/
 int controller::init(OBJECT *parent){
+
 	OBJECT *hdr = OBJECTHDR(this);
 	char tname[32];
 	char *namestr = (hdr->name ? hdr->name : tname);
 	double *pInitPrice = NULL;
-	//printf("--->ZZZZZZZZZZZZZZZZZ\r\n");
+
+	parent2 = parent;
 	sprintf(tname, "controller:%i", hdr->id);
 
 	cheat();
@@ -905,7 +923,8 @@ int controller::init(OBJECT *parent){
 
 	if(state[0] != 0){
 		// grab state pointer
-		powerstate_prop = gld_property(parent,state); // pState = gl_get_enum_by_name(parent, state);
+		powerstate_prop = gld_property(parent,state); 
+// pState = gl_get_enum_by_name(parent, state);
 		if ( !powerstate_prop.is_valid() )
 		{
 			gl_error("state property name '%s' is not published by parent object '%s'", state, get_object(parent)->get_name());
@@ -1001,6 +1020,8 @@ int controller::init(OBJECT *parent){
 		}
 		// get override, if set
 	}
+
+
 	//get initial clear price
 	last_p = *pInitPrice;
 	lastmkt_id = 0;
@@ -1135,8 +1156,10 @@ TIMESTAMP controller::presync(TIMESTAMP t0, TIMESTAMP t1){
 	return TS_NEVER;
 }
 
+
+
 TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
-	printf("%f\r\n", averageClearingPriceLocalVar);
+
 	double bid = -1.0;
 	int64 no_bid = 0; // flag gets set when the current temperature drops in between the the heating setpoint and cooling setpoint curves
 	double demand = 0.0;
@@ -1152,6 +1175,25 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 	OBJECT *hdr = OBJECTHDR(this);
 	char mktname[1024];
 	char ctrname[1024];
+	//////////////////////////////fetching the proper hvac //////////////////////////////////
+		/*char namebuf[128];
+		gl_name(OBJECTHDR(this), namebuf, 127);
+		std::string testcase = "testcase";
+		if (testcase.compare(namebuf) == 0){
+			char timenext_run[128];
+			gl_printtime(next_run, timenext_run, 127);
+			//enthousiasm = 10.0;
+			//enthousiasm = averageClearingPriceLocalVar;
+
+		} else {
+			//enthousiasm = 10.0;
+			//enthousiasm = averageClearingPriceLocalVar;
+		}*/
+
+
+
+	/////////////////////////////////////////////////////
+
 	if (control_mode == CN_DEV_LEVEL) {		
 		//printf("Reg signal is %f\n",fast_reg_signal);
 		fast_reg_run = gl_globalclock + (TIMESTAMP)(reg_period - (gl_globalclock+reg_period) % reg_period);
@@ -1232,15 +1274,23 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 			// update using last price
 			// T_set,a = T_set + (P_clear - P_avg) * | T_lim - T_set | / (k_T * stdev24)
 
-			enthousiasm=averageClearingPriceLocalVar;
-			clear_price = *pClearedPrice + enthousiasm * 0.05;
+
+				clear_price = *pClearedPrice ;
+
+
+			//clear_price = *pClearedPrice + averageClearingPriceLocalVar * 0.05;
 			controller_bid.rebid = false;
+
+
+			//printf("-------------------%d\r\n", averageClearingPriceLocalVar);
+
 
 			if(use_predictive_bidding == TRUE){
 				if((dir > 0 && clear_price < last_p) || (dir < 0 && clear_price > last_p)){
 					shift_direction = -1;
 				} else if((dir > 0 && clear_price >= last_p) || (dir < 0 && clear_price <= last_p)){
 					shift_direction = 1;
+
 				} else {
 					shift_direction = 0;
 				}
@@ -1393,8 +1443,6 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 					return TS_INVALID;
 				}
 			}
-
-
 			//lastbid_id = market->submit(OBJECTHDR(this), -last_q, last_p, bid_id, (BIDDERSTATE)(pState != 0 ? *pState : 0));
 			controller_bid.market_id = lastmkt_id;
 			controller_bid.price = last_p;
@@ -1856,15 +1904,142 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 				*pHeatingSetpoint = heat_min;
 
 			lastmkt_id = *pMarketId;
+		}
+		/////////////////////////////changing comfort zones of hvac/ //////////////
+					/*if (enthousiasm > 0.18){
+									*pHeatingSetpoint = 0;
+									*pCoolingSetpoint = 100;
+								}*/
 
-			//magda
-			if (enthousiasm > 0.18){
-			*pHeatingSetpoint = 0;
-			*pCoolingSetpoint = 100;
+		//////////////////////////////////game///////////////////////////////////////
+
+			//testing
+			nashL = 0.00154;
+			totalL = 2000;
+
+			if(nashL!=0 && totalL!=0){
+				indoorTemp = gl_get_double_by_name(parent2, "air_temperature");
+				outdoorTemp = gl_get_double_by_name(parent2,"outdoor_temperature");
+				heatingSet = gl_get_double_by_name(parent2, "heating_setpoint");
+				coolingSet = gl_get_double_by_name(parent2, "cooling_setpoint");
+				designHeatingCap = gl_get_double_by_name(parent2,"design_heating_capacity");
+				designCoolingCap = gl_get_double_by_name(parent2,"design_cooling_capacity");
+				initHeatingCOP = gl_get_double_by_name(parent2, "heating_COP");
+				initCoolingCOP = gl_get_double_by_name(parent2, "cooling_COP");
+				heatingD = gl_get_double_by_name(parent2, "heating_demand");
+				coolingD = gl_get_double_by_name(parent2, "cooling_demand");
+
+				double calculatedLoad = 0.0;
+				double range = 10.0;
+
+				double coolingmin = *coolingSet - range;
+				double coolingmax = *coolingSet + range;
+				double heatingmin = *heatingSet - range;
+				double heatingmax = *heatingSet + range;
+
+				double theta = 0.5;
+				double gama = 1;
+				double gamadoubled = pow(gama, 2.0);
+
+				bool reCalculated = false;
+				double c_cop;
+				double h_cop;
+				double air_temperature = *indoorTemp;
+
+				double calculatedCoolingCapacity;
+				double calculatedHeatingCapacity;
+				if (*indoorTemp> coolingmin){
+					calculatedLoad = ((2*theta*gamadoubled*(*coolingD)) - (nashL*totalL)) / ((2*theta*gamadoubled)+nashL);
+					if (calculatedLoad >= (*coolingD)){
+						calculatedCoolingCapacity = *coolingD;
+						//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
+						//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
+					}else{
+						reCalculated = true;
+						calculatedCoolingCapacity = calculatedLoad;
+						//itList->second.calculatedCoolingCOP = calculateCoolingCOP(itList->first);
+						double pTout = *outdoorTemp;
+						double dcc = *designCoolingCap;
+						c_cop = (dcc*(1.48924533-0.00514995*(pTout))*(-0.01363961+0.01066989*(pTout)))/calculatedCoolingCapacity * KWPBTUPH;
+						//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
+						h_cop = *initHeatingCOP;
+					}
+					//if (calculatedLoad >= itList->second.coolingDemand){
+						//itList->second.willWork = true;
+					//}
+							//printf("original load was : %f calculated load is : %f \n", itList->second.coolingDemand, calculatedLoad);
+				}else if (*indoorTemp< heatingmax){
+					calculatedLoad = ((2 * theta*gamadoubled*(*heatingD)) - (nashL*totalL)) / ((2 * theta*gamadoubled) + nashL);
+
+					if (calculatedLoad >= (*heatingD)){
+						calculatedHeatingCapacity = *heatingD;
+						//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
+						//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
+					} else{
+						reCalculated = true;
+						calculatedHeatingCapacity = calculatedLoad;
+						//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
+						double pTout = *outdoorTemp;
+						double dcc = *designHeatingCap;
+						h_cop=(dcc*(0.34148808+0.00894102*(pTout)+0.00010787*(pTout)*(pTout))*(2.03914613-0.03906753*(pTout)+0.00045617*(pTout)*(pTout)-0.00000203*(pTout)*(pTout)*(pTout)))
+															/ calculatedHeatingCapacity * KWPBTUPH;
+						//itList->second.calculatedHeatingCOP = calculateHeatingCOP(itList->first);
+						c_cop = *initCoolingCOP;
+
+					}
+					//if (calculatedLoad >= itList->second.heatingDemand){
+						//itList->second.willWork = true;
+					//}
+							//printf("original load was : %f calculated load is : %f \n", itList->second.heatingDemand, calculatedLoad);
+				}
+
+				if (reCalculated && c_cop!=0 &&h_cop!=0){//
+					printf("---------------------->>\r\n");
+					// We have to cool
+					if (*pMonitor > cool_max){
+						double coolingCOP = c_cop;
+						char coolingCOP_string[1024];
+						sprintf(coolingCOP_string, "%f", coolingCOP);
+						gl_set_value_by_name(parent2, "cooling_COP", coolingCOP_string);
+						printf(" We have to cool :%f\r\n", c_cop);
+					}
+					// We have to heat
+					else if (*pMonitor < heat_min){
+						double heatingCOP = h_cop;
+						char heatingCOP_string[1024];
+						sprintf(heatingCOP_string, "%f", heatingCOP);
+						gl_set_value_by_name(parent2, "heating_COP", heatingCOP_string);
+						printf(" We have to heat : %f\r\n", h_cop);
+					}
+					// We might heat, if the price is right
+					else if (*pMonitor <= heat_max && *pMonitor >= heat_min){
+						double heatingCOP = h_cop;
+						char heatingCOP_string[1024];
+						sprintf(heatingCOP_string, "%f", heatingCOP);
+						gl_set_value_by_name(parent2, "heating_COP", heatingCOP_string);
+						printf(" We might have to heat :%f \r\n", h_cop);
+					}
+					// We might cool, if the price is right
+					else if (*pMonitor <= cool_max && *pMonitor >= cool_min){
+						double coolingCOP = c_cop;
+						char coolingCOP_string[1024];
+						sprintf(coolingCOP_string, "%f", coolingCOP);
+						printf(" We might have to cool : %f \r\n", c_cop);
+						gl_set_value_by_name(parent2, "cooling_COP", coolingCOP_string);
+					}
+					printf(" ------------------------<<\r\n");
+				}
 			}
 
-		}
-		
+
+
+
+
+
+
+
+		////////////////////////////////////////////////////////////////////////////////
+
 		// submit bids
 		double previous_q = last_q; //store the last value, in case we need it
 		last_p = 0.0;
@@ -1895,7 +2070,7 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 				//printf("===>%f\r\n", averageClearingPrice);
 				last_p = *pAvg + ( (fabs(*pStd) < bid_offset) ? 0.0 : (*pMonitor - heating_setpoint0) * ramp * (*pStd) / fabs(range) );
 			} else {
-				printf("---7----->>>>:%f\r\n", pAvg);
+				//printf("---7----->>>>:%f\r\n", pAvg);
 				last_p = *pAvg;
 			}
 			last_q = *pHeatingDemand;
@@ -1909,7 +2084,7 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 				//printf("---8----->>>>:%f\r\n", pAvg);
 				last_p = *pAvg + ( (fabs(*pStd) < bid_offset) ? 0 : (*pMonitor - cooling_setpoint0) * ramp * (*pStd) / fabs(range) );
 			} else {
-				printf("---9----->>>>:%f\r\n", pAvg);
+				//printf("---9----->>>>:%f\r\n", pAvg);
 				last_p = *pAvg;
 			}
 			last_q = *pCoolingDemand;
@@ -1925,18 +2100,19 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 				return TS_INVALID;
 			}
 		}
-
-		//one avoid high prices
-		if (enthousiasm > 0.18){
-			last_p = 0.0;
-			last_q = 0.0;
-		}
-
-
-
 		controller_bid.market_id = lastmkt_id;
 		controller_bid.price = last_p;
 		controller_bid.quantity = -last_q;
+
+
+		///////////////////////////////////changing comfort zones of hvac//////////////////////////
+		/*if (enthousiasm > 0.18){
+					last_p = 0.0;
+					last_q = 0.0;
+				}*/
+
+
+
 
 		if(last_q > 0.001){
 			if( powerstate_prop.is_valid() ){
@@ -2042,6 +2218,14 @@ TIMESTAMP controller::postsync(TIMESTAMP t0, TIMESTAMP t1){
 		next_run += (TIMESTAMP)(this->period);
 		rv = next_run - bid_delay;
 	}
+
+	////////////////////////////////////////////////////////////////one house only///////////
+	/*if (enthousiasm > 0.18){
+
+					*pHeatingSetpoint = 0;
+					*pCoolingSetpoint = 100;
+	}*/
+
 
 	return rv;
 }
@@ -2258,5 +2442,8 @@ EXPORT TIMESTAMP sync_controller(OBJECT *obj, TIMESTAMP t1, PASSCONFIG pass)
 	}
 	SYNC_CATCHALL(controller);
 }
+
+
+
 
 // EOF
