@@ -402,21 +402,37 @@ void *serviceTheRequest(void *dummyptr){
 	size_t len;
 	//SOCKET fd = (SOCKET)*((int *)ptr);
 	//int fd = (int)ptr;
-	char* buffer = (char*)malloc(1024);
-	char* buffer2 = (char*)malloc(1024);
+	char* buffer = (char*)malloc(4096);
+	char* buffer2 = (char*)malloc(4096);
 	//printf("--->333\r\n");
 	int counter =0;
+
 	while ( (int)(len=recv_data(newsockfd,buffer,sizeof(buffer)))>0 )
 	{
+//		printf("==>|%s|<+++\r\n", buffer);
+
 		if(strchr(buffer, '\r') != NULL){
 			counter += len;
 			strcat(buffer2, buffer);
 			buffer2[counter] = '\0';
 			if(strlen(buffer2) > 1){
+				//printf(">>>>>>>>>>>>>>>>>: %s\r\n", buffer2);
 
-				nashL  = atof(buffer2);
-				printf("supp : %f\r\n", nashL);
-				totalL = 2000;
+				char* token = strtok(buffer2, " ");
+
+				//nashL = atof(token);
+				sscanf(token, "%lf", &nashL);
+				printf("nash value : %.18f\r\n", nashL);
+				token = strtok(NULL, " ");
+				//totalL = atof(token);
+				//double d;
+				sscanf(token, "%lf", &totalL);
+				printf("total Load : %.12f\r\n", totalL);
+				//nashL = atof(buffer2);
+				//printf("supp value : %f\r\n", nashL);
+
+				printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\r\n");
+
 			}
 			memset(buffer2, 0, sizeof(buffer2));
 			counter=0;
@@ -426,8 +442,63 @@ void *serviceTheRequest(void *dummyptr){
 		}
 	}
 
-
+	//free(buffer);
+    //free(buffer2);
+	//printf("--->2222\r\n");
 }
+
+
+/*
+void *serviceTheRequest(void *dummyptr){
+	//printf("--->1111\r\n");
+	size_t len;
+	//SOCKET fd = (SOCKET)*((int *)ptr);
+	//int fd = (int)ptr;
+	char* buffer = (char*)malloc(1024);
+	char* buffer2 = (char*)malloc(1024);
+	//printf("--->333\r\n");
+	int counter =0;
+	while ( (int)(len=recv_data(newsockfd,buffer,sizeof(buffer)))>0 )
+	{
+		char* ptr = strchr((buffer+counter), '\r');
+
+		if(ptr != NULL){
+			//The code enclosed within the followig section assumes we receive a string like
+			//"-0.001479\r\n618.0\r\n"
+			counter += (ptr - buffer);
+			strncpy(buffer2, (buffer + counter), (ptr - buffer));
+			//strcat(buffer2, buffer);
+			buffer2[counter] = '\0';
+
+			if(strlen(buffer2) > 1){
+
+				nashL  = atof(buffer2);
+				printf("supp value 2 : %f\r\n", nashL);
+				totalL = 2000;
+			}
+			memset(buffer2, 0, sizeof(buffer2));
+			ptr = strchr((buffer+counter), '\r');
+
+			if(ptr != NULL){
+                strncpy(buffer2, (buffer + counter), (ptr - buffer));
+				counter += (ptr - buffer);
+                buffer2[counter] = '\0';
+
+				if(strlen(buffer2) > 1){
+					nashL  = atof(buffer2);
+					printf("supp value 1 : %f\r\n", nashL);
+					totalL = 2000;
+				}
+				memset(buffer2, 0, sizeof(buffer2));
+			}
+			counter=0;
+
+		}else{
+			strncpy(buffer2+counter, buffer, len);
+			counter += len;
+		}
+	}
+}*/
 
 void* startCommServer(void*){
 	//int portNumber = global_server_portnum;
@@ -1155,6 +1226,7 @@ TIMESTAMP controller::presync(TIMESTAMP t0, TIMESTAMP t1){
 
 	return TS_NEVER;
 }
+
 
 
 
@@ -1913,129 +1985,128 @@ TIMESTAMP controller::sync(TIMESTAMP t0, TIMESTAMP t1){
 
 		//////////////////////////////////game///////////////////////////////////////
 
-			//testing
-			nashL = 0.00154;
-			totalL = 2000;
+		//testing
+		//nashL = 0.00154;
+		//totalL = 2000;
 
-			if(nashL!=0 && totalL!=0){
-				indoorTemp = gl_get_double_by_name(parent2, "air_temperature");
-				outdoorTemp = gl_get_double_by_name(parent2,"outdoor_temperature");
-				heatingSet = gl_get_double_by_name(parent2, "heating_setpoint");
-				coolingSet = gl_get_double_by_name(parent2, "cooling_setpoint");
-				designHeatingCap = gl_get_double_by_name(parent2,"design_heating_capacity");
-				designCoolingCap = gl_get_double_by_name(parent2,"design_cooling_capacity");
-				initHeatingCOP = gl_get_double_by_name(parent2, "heating_COP");
-				initCoolingCOP = gl_get_double_by_name(parent2, "cooling_COP");
-				heatingD = gl_get_double_by_name(parent2, "heating_demand");
-				coolingD = gl_get_double_by_name(parent2, "cooling_demand");
+				if(nashL!=0 && totalL!=0){
 
-				double calculatedLoad = 0.0;
-				double range = 10.0;
+					//printf("nash, total conditions satisfied------------ \r\n");
+					indoorTemp = gl_get_double_by_name(parent2, "air_temperature");
+					outdoorTemp = gl_get_double_by_name(parent2,"outdoor_temperature");
+					heatingSet = gl_get_double_by_name(parent2, "heating_setpoint");
+					coolingSet = gl_get_double_by_name(parent2, "cooling_setpoint");
+					designHeatingCap = gl_get_double_by_name(parent2,"design_heating_capacity");
+					designCoolingCap = gl_get_double_by_name(parent2,"design_cooling_capacity");
+					initHeatingCOP = gl_get_double_by_name(parent2, "heating_COP");
+					initCoolingCOP = gl_get_double_by_name(parent2, "cooling_COP");
+					heatingD = gl_get_double_by_name(parent2, "heating_demand");
+					coolingD = gl_get_double_by_name(parent2, "cooling_demand");
 
-				double coolingmin = *coolingSet - range;
-				double coolingmax = *coolingSet + range;
-				double heatingmin = *heatingSet - range;
-				double heatingmax = *heatingSet + range;
+						double calculatedLoad = 0.0;
+						double range = 2.0;
 
-				double theta = 0.5;
-				double gama = 1;
-				double gamadoubled = pow(gama, 2.0);
+						double coolingmin = *coolingSet - range;
+						double coolingmax = *coolingSet + range;
+						double heatingmin = *heatingSet - range;
+						double heatingmax = *heatingSet + range;
 
-				bool reCalculated = false;
-				double c_cop;
-				double h_cop;
-				double air_temperature = *indoorTemp;
+						double theta = 0.5;
+						double gama = 1;
+						double gamadoubled = pow(gama, 2.0);
 
-				double calculatedCoolingCapacity;
-				double calculatedHeatingCapacity;
-				if (*indoorTemp> coolingmin){
-					calculatedLoad = ((2*theta*gamadoubled*(*coolingD)) - (nashL*totalL)) / ((2*theta*gamadoubled)+nashL);
-					if (calculatedLoad >= (*coolingD)){
-						calculatedCoolingCapacity = *coolingD;
-						//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
-						//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
-					}else{
-						reCalculated = true;
-						calculatedCoolingCapacity = calculatedLoad;
-						//itList->second.calculatedCoolingCOP = calculateCoolingCOP(itList->first);
-						double pTout = *outdoorTemp;
-						double dcc = *designCoolingCap;
-						c_cop = (dcc*(1.48924533-0.00514995*(pTout))*(-0.01363961+0.01066989*(pTout)))/calculatedCoolingCapacity * KWPBTUPH;
-						//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
-						h_cop = *initHeatingCOP;
+						bool reCalculated = false;
+						double c_cop;
+						double h_cop;
+						double air_temperature = *indoorTemp;
+
+						double calculatedCoolingCapacity;
+						double calculatedHeatingCapacity;
+						if (*indoorTemp> coolingmin){
+
+							printf("cooling min satisfies condition------------ \r\n");
+							calculatedLoad = ((2*theta*gamadoubled*(*coolingD)) - (nashL*totalL)) / ((2*theta*gamadoubled)+nashL);
+							if (calculatedLoad >= (*coolingD)){
+								calculatedCoolingCapacity = *coolingD;
+								//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
+								//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
+							}else{
+								reCalculated = true;
+								calculatedCoolingCapacity = calculatedLoad;
+								//itList->second.calculatedCoolingCOP = calculateCoolingCOP(itList->first);
+								double pTout = *outdoorTemp;
+								double dcc = *designCoolingCap;
+								c_cop = (dcc*(1.48924533-0.00514995*(pTout))*(-0.01363961+0.01066989*(pTout)))/calculatedCoolingCapacity * KWPBTUPH;
+								//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
+								h_cop = *initHeatingCOP;
+							}
+							//if (calculatedLoad >= itList->second.coolingDemand){
+								//itList->second.willWork = true;
+							//}
+									//printf("original load was : %f calculated load is : %f \n", itList->second.coolingDemand, calculatedLoad);
+						}else if (*indoorTemp< heatingmax){
+							printf("heating max satisfies condition------------ \r\n");
+							calculatedLoad = ((2 * theta*gamadoubled*(*heatingD)) - (nashL*totalL)) / ((2 * theta*gamadoubled) + nashL);
+
+							if (calculatedLoad >= (*heatingD)){
+								calculatedHeatingCapacity = *heatingD;
+								//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
+								//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
+							} else{
+								reCalculated = true;
+								calculatedHeatingCapacity = calculatedLoad;
+								//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
+								double pTout = *outdoorTemp;
+								double dcc = *designHeatingCap;
+								h_cop=(dcc*(0.34148808+0.00894102*(pTout)+0.00010787*(pTout)*(pTout))*(2.03914613-0.03906753*(pTout)+0.00045617*(pTout)*(pTout)-0.00000203*(pTout)*(pTout)*(pTout)))
+																	/ calculatedHeatingCapacity * KWPBTUPH;
+								//itList->second.calculatedHeatingCOP = calculateHeatingCOP(itList->first);
+								c_cop = *initCoolingCOP;
+
+							}
+							//if (calculatedLoad >= itList->second.heatingDemand){
+								//itList->second.willWork = true;
+							//}
+									//printf("original load was : %f calculated load is : %f \n", itList->second.heatingDemand, calculatedLoad);
+						}
+
+						if (reCalculated && c_cop>0 &&h_cop>0){//
+							printf("---------------------final condition------------------------------>>\r\n");
+							// We have to cool
+							if (*pMonitor > cool_max){
+								double coolingCOP = c_cop;
+								char coolingCOP_string[1024];
+								sprintf(coolingCOP_string, "%f", coolingCOP);
+								gl_set_value_by_name(parent2, "cooling_COP", coolingCOP_string);
+								printf(" We have to cool :%f\r\n", c_cop);
+							}
+							// We have to heat
+							else if (*pMonitor < heat_min){
+								double heatingCOP = h_cop;
+								char heatingCOP_string[1024];
+								sprintf(heatingCOP_string, "%f", heatingCOP);
+								gl_set_value_by_name(parent2, "heating_COP", heatingCOP_string);
+								printf(" We have to heat : %f\r\n", h_cop);
+							}
+							// We might heat, if the price is right
+							else if (*pMonitor <= heat_max && *pMonitor >= heat_min){
+								double heatingCOP = h_cop;
+								char heatingCOP_string[1024];
+								sprintf(heatingCOP_string, "%f", heatingCOP);
+								gl_set_value_by_name(parent2, "heating_COP", heatingCOP_string);
+								printf(" We might have to heat :%f \r\n", h_cop);
+							}
+							// We might cool, if the price is right
+							else if (*pMonitor <= cool_max && *pMonitor >= cool_min){
+								double coolingCOP = c_cop;
+								char coolingCOP_string[1024];
+								sprintf(coolingCOP_string, "%f", coolingCOP);
+								printf(" We might have to cool : %f \r\n", c_cop);
+								gl_set_value_by_name(parent2, "cooling_COP", coolingCOP_string);
+							}
+							printf(" ----------------------------------------------------<<\r\n");
+						}
 					}
-					//if (calculatedLoad >= itList->second.coolingDemand){
-						//itList->second.willWork = true;
-					//}
-							//printf("original load was : %f calculated load is : %f \n", itList->second.coolingDemand, calculatedLoad);
-				}else if (*indoorTemp< heatingmax){
-					calculatedLoad = ((2 * theta*gamadoubled*(*heatingD)) - (nashL*totalL)) / ((2 * theta*gamadoubled) + nashL);
-
-					if (calculatedLoad >= (*heatingD)){
-						calculatedHeatingCapacity = *heatingD;
-						//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
-						//itList->second.calculatedHeatingCOP = itList->second.initHeatingCOP;
-					} else{
-						reCalculated = true;
-						calculatedHeatingCapacity = calculatedLoad;
-						//itList->second.calculatedCoolingCOP = itList->second.initCoolingCOP;
-						double pTout = *outdoorTemp;
-						double dcc = *designHeatingCap;
-						h_cop=(dcc*(0.34148808+0.00894102*(pTout)+0.00010787*(pTout)*(pTout))*(2.03914613-0.03906753*(pTout)+0.00045617*(pTout)*(pTout)-0.00000203*(pTout)*(pTout)*(pTout)))
-															/ calculatedHeatingCapacity * KWPBTUPH;
-						//itList->second.calculatedHeatingCOP = calculateHeatingCOP(itList->first);
-						c_cop = *initCoolingCOP;
-
-					}
-					//if (calculatedLoad >= itList->second.heatingDemand){
-						//itList->second.willWork = true;
-					//}
-							//printf("original load was : %f calculated load is : %f \n", itList->second.heatingDemand, calculatedLoad);
-				}
-
-				if (reCalculated && c_cop!=0 &&h_cop!=0){//
-					printf("---------------------->>\r\n");
-					// We have to cool
-					if (*pMonitor > cool_max){
-						double coolingCOP = c_cop;
-						char coolingCOP_string[1024];
-						sprintf(coolingCOP_string, "%f", coolingCOP);
-						gl_set_value_by_name(parent2, "cooling_COP", coolingCOP_string);
-						printf(" We have to cool :%f\r\n", c_cop);
-					}
-					// We have to heat
-					else if (*pMonitor < heat_min){
-						double heatingCOP = h_cop;
-						char heatingCOP_string[1024];
-						sprintf(heatingCOP_string, "%f", heatingCOP);
-						gl_set_value_by_name(parent2, "heating_COP", heatingCOP_string);
-						printf(" We have to heat : %f\r\n", h_cop);
-					}
-					// We might heat, if the price is right
-					else if (*pMonitor <= heat_max && *pMonitor >= heat_min){
-						double heatingCOP = h_cop;
-						char heatingCOP_string[1024];
-						sprintf(heatingCOP_string, "%f", heatingCOP);
-						gl_set_value_by_name(parent2, "heating_COP", heatingCOP_string);
-						printf(" We might have to heat :%f \r\n", h_cop);
-					}
-					// We might cool, if the price is right
-					else if (*pMonitor <= cool_max && *pMonitor >= cool_min){
-						double coolingCOP = c_cop;
-						char coolingCOP_string[1024];
-						sprintf(coolingCOP_string, "%f", coolingCOP);
-						printf(" We might have to cool : %f \r\n", c_cop);
-						gl_set_value_by_name(parent2, "cooling_COP", coolingCOP_string);
-					}
-					printf(" ------------------------<<\r\n");
-				}
-			}
-
-
-
-
-
-
 
 
 		////////////////////////////////////////////////////////////////////////////////
