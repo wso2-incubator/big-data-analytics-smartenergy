@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1473917687566
+Build-Jdk: 1.8.0_101
+Built-By: sanjaya
+Bundle-ManifestVersion: 2
+Bundle-Name: smartgrid
+Bundle-SymbolicName: smartgrid
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+DynamicImport-Package: *
+Export-Package: org.wso2.siddhi.extension.smartgrid;uses:="org.wso2.sidd
+ hi.core.config,org.wso2.siddhi.core.executor,org.wso2.siddhi.core.execu
+ tor.function,org.wso2.siddhi.query.api.definition";version="1.0.0"
+Import-Package: org.apache.log4j;resolution:=optional;version="[1.2,2)",
+ org.wso2.siddhi.core.config;resolution:=optional;version="[3.0,4)",org.
+ wso2.siddhi.core.executor;resolution:=optional;version="[3.0,4)",org.ws
+ o2.siddhi.core.executor.function;resolution:=optional;version="[3.0,4)"
+ ,org.wso2.siddhi.query.api.definition;resolution:=optional;version="[3.
+ 0,4)",org.wso2.siddhi.query.api.exception;resolution:=optional;version=
+ "[3.0,4)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.5))"
+Tool: Bnd-3.2.0.201605172007
