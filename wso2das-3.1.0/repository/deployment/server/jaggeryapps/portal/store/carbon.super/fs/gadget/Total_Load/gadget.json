@@ -1,0 +1,9 @@
+{
+    "id": "Total_Load",
+    "title": "Total Load",
+    "type": "gadget",
+    "thumbnail": "gadget/Total_Load/thumbnail.png",
+    "data": {
+        "url": "gadget/Total_Load/gadget.xml"
+    }
+}

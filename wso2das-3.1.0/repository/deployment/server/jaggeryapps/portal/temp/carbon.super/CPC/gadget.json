@@ -1,0 +1,9 @@
+{
+    "id": "CPC",
+    "title": "CPC",
+    "type": "gadget",
+    "thumbnail": "gadget/CPC/thumbnail.png",
+    "data": {
+        "url": "gadget/CPC/gadget.xml"
+    }
+}

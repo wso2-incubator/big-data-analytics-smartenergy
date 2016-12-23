@@ -1,0 +1,40 @@
+{
+  "name": "controllerUpdated",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "Contains timestamp in unix and required details for nash load calculation",
+  "payloadData": [
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    },
+    {
+      "name": "coolingSetPoint",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "heatingSetPoint",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "coolingDemand",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "heatingDemand",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "indoorTemperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "totalLoad",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "name",
+      "type": "STRING"
+    }
+  ]
+}

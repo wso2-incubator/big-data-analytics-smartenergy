@@ -1,0 +1,24 @@
+{
+  "name": "dataInQuantity",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "CSV reader for the stimulator",
+  "payloadData": [
+    {
+      "name": "id",
+      "type": "INT"
+    },
+    {
+      "name": "time",
+      "type": "STRING"
+    },
+    {
+      "name": "windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "solarflux",
+      "type": "DOUBLE"
+    }
+  ]
+}

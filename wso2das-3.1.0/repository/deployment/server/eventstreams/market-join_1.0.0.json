@@ -1,0 +1,20 @@
+{
+  "name": "market-join",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "",
+  "payloadData": [
+    {
+      "name": "time",
+      "type": "LONG"
+    },
+    {
+      "name": "clearingprice",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "clearingpriceDef",
+      "type": "DOUBLE"
+    }
+  ]
+}

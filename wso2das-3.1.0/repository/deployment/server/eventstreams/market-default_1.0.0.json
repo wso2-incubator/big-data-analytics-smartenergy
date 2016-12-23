@@ -1,0 +1,16 @@
+{
+  "name": "market-default",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "",
+  "payloadData": [
+    {
+      "name": "time",
+      "type": "STRING"
+    },
+    {
+      "name": "clearingprice",
+      "type": "DOUBLE"
+    }
+  ]
+}

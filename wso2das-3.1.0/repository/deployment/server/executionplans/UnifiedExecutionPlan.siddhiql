@@ -1,0 +1,162 @@
+/* Enter a unique ExecutionPlan */
+
+@Plan:name('UnifiedExecutionPlan')
+
+/* define streams/tables and write queries here ... */
+
+@Import('market-default:1.0.0')
+define stream markDef (time string, clearingprice double);
+
+@Import('market:1.0.0')
+define stream market (clearingprice double, clearingquantity double, sellertotal double, buyertotal double, clearingtype string, name string, time string);
+
+@Import('controller:1.0.0')
+define stream contIn (bid_price double, bid_quantity double, power_state string, air_temperature double, system_mode string, hvac_load double, outdoor_temperature double, name string,
+                      heating_setpoint double, cooling_setpoint double, design_heating_capacity double, design_cooling_capacity double, heating_COP double, cooling_COP double, 
+                      heating_demand double, cooling_demand double, time string);
+
+@Import('dataInQuantity:1.0.0')
+define stream csvIn (id int, time string, windspeed double, solarflux double);
+
+@Export('market-join:1.0.0')
+define stream markJoin (time long, clearingprice double, clearingpriceDef double);
+
+@Export('marketType:1.0.0')
+define stream markUI (timestamp long, value double, type string);
+
+@Export('outputStream:1.0.0')
+define stream output (name string, nashL double, totalLoad double, category string);
+					  
+
+@Export('quantityIn:1.0.0')
+define stream qIn (id int, tstamp long, windspeed double, solarflux double,  ma_5_windspeed double, ma_5_solarflux double, mm_5_windspeed double,
+								  mm_5_solarflux double, sd_5_windspeed double, sd_5_solarflux double);
+
+@Export('mktStreamUpdated:1.0.0')
+define stream marketUp (tstamp long, clearingquantity double, sellertotal double, buyertotal double, clearingtype string, name string, time string, clearingprice double);
+
+@Export('controllerUpdated:1.0.0')
+define stream contUp (timestamp long, coolingSetPoint double, heatingSetPoint double, coolingDemand double, heatingDemand double, indoorTemperature double,  totalLoad double, 
+					  name string); 
+					  
+@Export('quantityOut:1.0.0')
+define stream qOut (id int, tstamp long, windspeed double, solarflux double, ma_5_windspeed double, ma_5_solarflux double, mm_5_windspeed double, mm_5_solarflux double, sd_5_windspeed double,
+					sd_5_solarflux double, sellertotalquantity double);
+
+
+@Export('loadCollector:1.0.0')
+define stream load (timestamp long, totalLoad double);
+
+@Export('nashLoad:1.0.0')
+define stream nashLoad (nash double, timestamp long, totalLoad double);
+
+
+define table weather(id int, timestamp long, windspeed double, solarflux double, a_wind double, a_solar double, m_wind double, m_solar double, sd_wind double, sd_solar double);
+
+define table weatherQ(timestamp long, supply double);
+
+define table markDefUp(time long, clearingprice double);
+
+from markDef
+select smartgrid:timeStampUnix(time) as time, clearingprice
+insert into markDefUp;
+
+
+from csvIn#window.length(5)  
+select id, 
+	smartgrid:timeStampUnix(time) as timestamp, 
+	windspeed,
+	solarflux,
+	feature:avg1(windspeed) as a_wind,
+	feature:avg1(solarflux) as a_solar, 
+	feature:med(windspeed) as m_wind, 
+	feature:med(solarflux) as m_solar, 
+	feature:stdDev1(windspeed) as sd_wind, 
+	feature:stdDev1(solarflux) as sd_solar 
+insert into weather;
+
+from market select smartgrid:timeStampUnix(time) as tstamp, clearingquantity, sellertotal, buyertotal, clearingtype, name, time , clearingprice insert into marketUp;
+
+from marketUp#window.length(1) join weather
+on (marketUp.tstamp + 900) == weather.timestamp
+select 769 as id, 
+weather.timestamp as tstamp, 
+	windspeed,
+	solarflux, 
+	weather.a_wind as ma_5_windspeed, 
+	weather.a_solar as ma_5_solarflux, 
+	weather.m_wind as mm_5_windspeed, 
+	weather.m_solar as mm_5_solarflux, 
+	weather.sd_wind as sd_5_windspeed, 
+	weather.sd_solar as sd_5_solarflux
+insert into qIn;
+
+from marketUp#window.length(1) join markDefUp
+on (marketUp.tstamp)==(markDefUp.time)
+select marketUp.tstamp as time, marketUp.clearingprice as clearingprice, markDefUp.clearingprice as clearingpriceDef
+insert into markJoin;
+
+from markJoin
+select time as timestamp, clearingprice as value, "GT" as type
+insert into markUI;
+
+from markJoin
+select time as timestamp, clearingpriceDef as value, "Default" as type
+insert into markUI;
+/*
+
+from qIn
+select tstamp as timestamp, ma_5_windspeed as value, "Average" as type
+insert into windStream;
+
+from qIn
+select tstamp as timestamp, mm_5_windspeed as value, "Median" as type
+insert into windStream;
+
+from qIn
+select tstamp as timestamp, sd_5_windspeed as value, "Std. Dev." as type
+insert into windStream;
+
+
+from qIn
+select tstamp as timestamp, ma_5_solarflux as value, "Average" as type
+insert into solarFluxStream;
+
+from qIn
+select tstamp as timestamp, mm_5_solarflux as value, "Median" as type
+insert into solarFluxStream;
+
+from qIn
+select tstamp as timestamp, sd_5_solarflux as value, "Std. Dev." as type
+insert into solarFluxStream;
+
+/*on (marketUp.tstamp + 900) == weather.timestamp*/
+
+from qIn#ml:predict('/home/fathima/GLD/data/predictionFeature', 'double')
+select *
+insert into qOut;
+
+
+from qOut select tstamp as timestamp, sellertotalquantity as supply insert into weatherQ;
+
+
+from contIn 
+select smartgrid:timeStampUnix(time) as timestamp, cooling_setpoint as coolingSetPoint, heating_setpoint as heatingSetPoint, cooling_demand as coolingDemand, heating_demand as heatingDemand, 
+air_temperature as indoorTemperature, (ifThenElse(air_temperature>(cooling_setpoint-(2.0)), cooling_demand, ifThenElse(air_temperature<(heating_setpoint-(2.0)), heating_demand, 0.0))) as totalLoad, name	
+insert into contUp;
+
+from contUp#window.lengthBatch(618)
+select timestamp, sum(totalLoad) as totalLoad
+insert into load;
+
+
+from load#window.length(1) join weatherQ
+on (((load.timestamp/60)/15)*15*60) == weatherQ.timestamp
+select ifThenElse(load.totalLoad>(0.1),((2*(0.5)*1*(load.totalLoad- (weatherQ.supply-(2400.0))))/(618*(weatherQ.supply-(2400.00)))),0.0) as nash, load.timestamp as timestamp, load.totalLoad as totalLoad
+insert into nashLoad;
+
+/*on (((load.timestamp/60)/15)*15*60) == weatherQ.timestamp*/
+
+from nashLoad
+select 'abc' as name, nash as nashL,totalLoad as totalLoad, '|abc' as category
+insert into output;

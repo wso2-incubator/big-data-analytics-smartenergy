@@ -1,0 +1,9 @@
+{
+    "id": "Stimulation_Time",
+    "title": "Stimulation Time",
+    "type": "gadget",
+    "thumbnail": "gadget/Stimulation_Time/thumbnail.png",
+    "data": {
+        "url": "gadget/Stimulation_Time/gadget.xml"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "id": "Clearing_Price",
+    "title": "Clearing Price",
+    "type": "gadget",
+    "thumbnail": "gadget/Clearing_Price/thumbnail.png",
+    "data": {
+        "url": "gadget/Clearing_Price/gadget.xml"
+    }
+}

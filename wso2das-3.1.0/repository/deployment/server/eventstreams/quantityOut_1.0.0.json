@@ -1,0 +1,52 @@
+{
+  "name": "quantityOut",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "Predicted quantity value and the rest of the attributes",
+  "payloadData": [
+    {
+      "name": "id",
+      "type": "INT"
+    },
+    {
+      "name": "tstamp",
+      "type": "LONG"
+    },
+    {
+      "name": "windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "ma_5_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "ma_5_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "mm_5_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "mm_5_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "sd_5_windspeed",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "sd_5_solarflux",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "sellertotalquantity",
+      "type": "DOUBLE"
+    }
+  ]
+}

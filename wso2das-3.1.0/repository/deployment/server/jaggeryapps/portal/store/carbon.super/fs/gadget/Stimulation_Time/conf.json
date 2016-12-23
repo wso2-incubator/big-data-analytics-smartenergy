@@ -1,0 +1,1 @@
+{"provider-conf" : {"streamName" : "market:1.0.0", "provider-name" : "realtime"}, "chart-conf" : {"x" : "time", "title" : "GridLab-D Time", "maxLength" : "30", "gadget-name" : "Stimulation Time", "chart-name" : "number-chart"}}

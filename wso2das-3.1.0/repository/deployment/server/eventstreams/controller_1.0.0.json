@@ -1,0 +1,76 @@
+{
+  "name": "controller",
+  "version": "1.0.0",
+  "nickName": "controller",
+  "description": "controller event stream",
+  "payloadData": [
+    {
+      "name": "bid_price",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "bid_quantity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "power_state",
+      "type": "STRING"
+    },
+    {
+      "name": "air_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "system_mode",
+      "type": "STRING"
+    },
+    {
+      "name": "hvac_load",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "outdoor_temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "name",
+      "type": "STRING"
+    },
+    {
+      "name": "heating_setpoint",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "cooling_setpoint",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "design_heating_capacity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "design_cooling_capacity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "heating_COP",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "cooling_COP",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "heating_demand",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "cooling_demand",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "time",
+      "type": "STRING"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+    "id": "Clearing_Price_Comparison",
+    "title": "Clearing Price Comparison",
+    "type": "gadget",
+    "thumbnail": "gadget/Clearing_Price_Comparison/thumbnail.png",
+    "data": {
+        "url": "gadget/Clearing_Price_Comparison/gadget.xml"
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "loadCollector",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "Contains the timestamp in unix and the total load for the particular timestamp",
+  "payloadData": [
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    },
+    {
+      "name": "totalLoad",
+      "type": "DOUBLE"
+    }
+  ]
+}

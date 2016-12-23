@@ -1,0 +1,1 @@
+{"provider-conf" : {"streamName" : "marketType:1.0.0", "provider-name" : "realtime"}, "chart-conf" : {"x" : "timestamp", "xType" : "default", "y" : "value", "yType" : "number", "color" : "type", "maxLength" : "1000", "gadget-name" : "Clearing Price Comparison", "chart-name" : "line-chart"}}

@@ -1,0 +1,20 @@
+{
+  "name": "nashLoad",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "This contains the nash load value",
+  "payloadData": [
+    {
+      "name": "nash",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    },
+    {
+      "name": "totalLoad",
+      "type": "DOUBLE"
+    }
+  ]
+}
