@@ -17,15 +17,22 @@ To run the experiments first resolve all dependencies of CEP , DAS and GLD. Then
    Change the path of pediction models in the execution plan. (prediction models can be found in /models)<br/>
    Go to Tools → Event Stimulator and play the given .csv file/s.
    
-3. Change the file path of following lines<br/>
+3. Change the file path of following lines in grid.glm of specified glm folder.<br/>
     #include "/<path-to-glm-folder>/light_schedule.glm";<br/>
-    #include "/<-path-to-glm-folder>/water_and_setpoint_schedule.glm";<br/>
-    in grid.glm of specified glm folder.
-4. Build the GLD instance using the following commands in order.
+    #include "/<-path-to-glm-folder>/water_and_setpoint_schedule.glm";
+4. Build the GLD instance using the following commands in order in the GLD folder.
     <br/> autoreconf -isf
     <br/> ./configure
     <br/> sudo make install
     <br/> Note : You might need to replace line 350 with the following.
     <br/> $(LDFLAGS) -lpthread -o $@
 5. Start the GLD server with the following command. <br/>
-   pathToBin/gridlabd.bin pathToGLM/grid.glm — server
+   pathToBin/gridlabd.bin pathToGLM/grid.glm -- server
+
+
+Files edited in this experiment are ,
+
+1. market/controller.cpp
+<br/> This receives the data (i.e. nash load and total load) sent from DAS/CEP and does the required changes in the setpoints.
+2. tape/multi_recorder.c
+<br/> Edited inorder to send http requests to DAS/CEP. The initial implentation was sending a curl request, which was later modified to send requests through a socket.
