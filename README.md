@@ -18,10 +18,10 @@ To run the experiments first resolve all dependencies of CEP , DAS and GLD. Then
    Go to Tools → Event Stimulator and play the given .csv file/s.
    
 3. Build the GLD instance using the following commands in order.
-    change the path of 
-    #include "/<path-to-glm-folder>/light_schedule.glm";
-    #include "/<-path-to-glm-folder>/water_and_setpoint_schedule.glm";
-    files in grid.glm of specified glm folder.
+    change the file path of following lines<br/>
+    #include "/<path-to-glm-folder>/light_schedule.glm";<br/>
+    #include "/<-path-to-glm-folder>/water_and_setpoint_schedule.glm";<br/>
+    in grid.glm of specified glm folder.
     <br/> autoreconf -isf
     <br/> ./configure
     <br/> sudo make install
